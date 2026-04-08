@@ -1,6 +1,6 @@
 package main
 
-import "github.com/marco/go-apod-bg/cmd"
+import "github.com/mpuccini/astrowall/cmd"
 
 func main() {
 	cmd.Execute()

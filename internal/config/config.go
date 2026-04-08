@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-const configDir = "go-apod-bg"
+const configDir = "astrowall"
 const configFile = "config.json"
 
 // Config holds persistent application settings.

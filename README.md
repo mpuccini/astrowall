@@ -1,4 +1,4 @@
-# go-apod-bg
+# astrowall
 
 A CLI tool that fetches NASA's Astronomy Picture of the Day (APOD) and sets it as your desktop wallpaper. Works on Linux, macOS, and Windows.
 
@@ -19,19 +19,19 @@ make clean        # remove build artifacts
 
 ```bash
 # Save your API key
-./go-apod-bg configure
+./astrowall configure
 
 # Set today's APOD as wallpaper
-./go-apod-bg update
+./astrowall update
 
 # Use a specific date
-./go-apod-bg update --date 2025-12-24
+./astrowall update --date 2025-12-24
 
 # Skip interactive prompts
-./go-apod-bg update --auto
+./astrowall update --auto
 
 # Restore your previous wallpaper
-./go-apod-bg restore
+./astrowall restore
 ```
 
 You can also pass `--api-key YOUR_KEY` or set the `NASA_API_KEY` environment variable instead of using `configure`.
@@ -53,7 +53,7 @@ internal/
   utils/       Date parsing helpers
 ```
 
-Images are cached in `~/Pictures/NASA/`. Configuration is stored in `~/.config/go-apod-bg/config.json` (Linux/macOS) or the equivalent user config directory on Windows.
+Images are cached in `~/Pictures/NASA/`. Configuration is stored in `~/.config/astrowall/config.json` (Linux/macOS) or the equivalent user config directory on Windows.
 
 ## License
 

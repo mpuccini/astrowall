@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/marco/go-apod-bg/internal/config"
+	"github.com/mpuccini/astrowall/internal/config"
 )
 
 const (

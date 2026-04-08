@@ -1,4 +1,4 @@
-module github.com/marco/go-apod-bg
+module github.com/mpuccini/astrowall
 
 go 1.25.0
 

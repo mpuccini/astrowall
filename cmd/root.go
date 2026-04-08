@@ -5,15 +5,15 @@ import (
 	"os"
 	"time"
 
-	"github.com/marco/go-apod-bg/internal/api"
-	"github.com/marco/go-apod-bg/internal/background"
-	"github.com/marco/go-apod-bg/internal/config"
-	"github.com/marco/go-apod-bg/internal/utils"
+	"github.com/mpuccini/astrowall/internal/api"
+	"github.com/mpuccini/astrowall/internal/background"
+	"github.com/mpuccini/astrowall/internal/config"
+	"github.com/mpuccini/astrowall/internal/utils"
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "go-apod-bg",
+	Use:   "astrowall",
 	Short: "NASA Astronomy Picture of the Day wallpaper setter",
 	Long:  "Downloads the NASA Astronomy Picture of the Day and sets it as your desktop wallpaper.",
 }
