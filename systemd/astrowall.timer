@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily NASA APOD wallpaper update
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+RandomizedDelaySec=5min
+
+[Install]
+WantedBy=timers.target

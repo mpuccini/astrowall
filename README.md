@@ -36,6 +36,43 @@ make clean        # remove build artifacts
 
 You can also pass `--api-key YOUR_KEY` or set the `NASA_API_KEY` environment variable instead of using `configure`.
 
+## Installation
+
+```bash
+# Build and install binary + systemd timer
+make install
+
+# Or, if you already have the binary installed:
+make install-systemd
+
+# Remove everything
+make uninstall
+```
+
+By default the binary is installed to `/usr/local/bin`. You can override this with `make install INSTALL_DIR=~/.local/bin`.
+
+### Automatic daily wallpaper (Linux)
+
+The `install-systemd` target sets up a systemd user timer that:
+
+- Runs `astrowall update --auto` once per day
+- Catches up after sleep/shutdown (`Persistent=true`)
+- Retries with backoff on transient failures (network, API errors)
+- Does not retry when there is nothing to do (e.g. APOD is a video)
+
+Useful commands:
+
+```bash
+# Check timer status
+systemctl --user status astrowall.timer
+
+# Trigger a manual run
+systemctl --user start astrowall.service
+
+# View logs
+journalctl --user -u astrowall.service
+```
+
 ## Platform Support
 
 - **Linux** — GNOME, KDE, XFCE, MATE, Cinnamon, Sway, Hyprland, with fallback to feh/swaybg
@@ -51,6 +88,7 @@ internal/
   background/  Cross-platform wallpaper management
   config/      JSON config file handling
   utils/       Date parsing helpers
+systemd/       Systemd service and timer unit files
 ```
 
 Images are cached in `~/Pictures/NASA/`. Configuration is stored in `~/.config/astrowall/config.json` (Linux/macOS) or the equivalent user config directory on Windows.

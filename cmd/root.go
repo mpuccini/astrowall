@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -113,6 +114,11 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 
 	filePath, err := client.DownloadImage(date)
 	if err != nil {
+		var noImg *api.ErrNoImage
+		if flagAuto && errors.As(err, &noImg) {
+			fmt.Printf("Skipping: %s\n", noImg)
+			return nil
+		}
 		return err
 	}
 

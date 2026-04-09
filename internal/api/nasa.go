@@ -19,6 +19,18 @@ const (
 	defaultKey = "DEMO_KEY"
 )
 
+// ErrNoImage is returned when the APOD for the requested date has no
+// downloadable image (e.g. the APOD is a video).
+type ErrNoImage struct {
+	Date      string
+	MediaType string
+}
+
+func (e *ErrNoImage) Error() string {
+	return fmt.Sprintf("image not found for the selected date %s (media type: %s)",
+		e.Date, e.MediaType)
+}
+
 // APODResponse represents the JSON response from the NASA APOD API.
 type APODResponse struct {
 	Date           string `json:"date"`
@@ -110,8 +122,10 @@ func (c *Client) DownloadImage(date time.Time) (string, error) {
 	}
 
 	if info.HDURL == "" {
-		return "", fmt.Errorf("image not found for the selected date %s (media type: %s)",
-			date.Format("2006-01-02"), info.MediaType)
+		return "", &ErrNoImage{
+			Date:      date.Format("2006-01-02"),
+			MediaType: info.MediaType,
+		}
 	}
 
 	fmt.Printf("Title: %s\n", info.Title)

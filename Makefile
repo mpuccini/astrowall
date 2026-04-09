@@ -11,7 +11,10 @@ PLATFORMS := \
 	windows/amd64 \
 	windows/arm64
 
-.PHONY: all clean build $(PLATFORMS)
+INSTALL_DIR   := /usr/local/bin
+SYSTEMD_DIR   := $(HOME)/.config/systemd/user
+
+.PHONY: all clean build install install-systemd uninstall $(PLATFORMS)
 
 all: $(PLATFORMS)
 
@@ -26,6 +29,28 @@ $(PLATFORMS):
 
 build:
 	go build -ldflags "$(LDFLAGS)" -o $(BINARY) .
+
+install: build
+	install -Dm755 $(BINARY) $(INSTALL_DIR)/$(BINARY)
+	$(MAKE) install-systemd
+	@echo "Installed $(BINARY) to $(INSTALL_DIR) and enabled astrowall.timer"
+
+install-systemd:
+	@command -v $(INSTALL_DIR)/$(BINARY) >/dev/null 2>&1 || \
+		{ echo "Error: $(INSTALL_DIR)/$(BINARY) not found. Run 'make install' or copy the binary first."; exit 1; }
+	@mkdir -p $(SYSTEMD_DIR)
+	sed 's|@@BINARY@@|$(INSTALL_DIR)/$(BINARY)|g' systemd/astrowall.service > $(SYSTEMD_DIR)/astrowall.service
+	cp systemd/astrowall.timer $(SYSTEMD_DIR)/astrowall.timer
+	systemctl --user daemon-reload
+	systemctl --user enable --now astrowall.timer
+	@echo "Systemd units installed and astrowall.timer enabled"
+
+uninstall:
+	systemctl --user disable --now astrowall.timer || true
+	rm -f $(SYSTEMD_DIR)/astrowall.service $(SYSTEMD_DIR)/astrowall.timer
+	rm -f $(INSTALL_DIR)/$(BINARY)
+	systemctl --user daemon-reload
+	@echo "Uninstalled $(BINARY) and removed systemd units"
 
 clean:
 	rm -rf $(OUTDIR) $(BINARY)

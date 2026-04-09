@@ -1,0 +1,19 @@
+[Unit]
+Description=Set desktop wallpaper to NASA Astronomy Picture of the Day
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=@@BINARY@@ update --auto
+Environment=DISPLAY=:0
+
+# Retry on transient failures (network, API errors).
+# "Nothing to do" cases (video APOD, small image) exit 0 and are not retried.
+Restart=on-failure
+RestartSec=5min
+RestartSteps=5
+RestartMaxDelaySec=30min
+
+[Install]
+WantedBy=default.target
